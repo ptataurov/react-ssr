@@ -12,59 +12,59 @@ import { reactRouterLoadData } from 'data/reactRouterLoadData'
 import pageTemplate from 'pageTemplate'
 
 const createMiddleware = ({ assets }) => {
-  const renderHtml = async req => {
-    const data = await reactRouterLoadData(req.url)
+	const renderHtml = async req => {
+		const data = await reactRouterLoadData(req.url)
 
-    const store = createStore(state => state, data)
+		const store = createStore(state => state, data)
 
-    const context = {}
-    const content = renderToString(
-      <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
-          {render()}
-        </StaticRouter>
-      </Provider>
-    )
+		const context = {}
+		const content = renderToString(
+			<Provider store={store}>
+				<StaticRouter location={req.url} context={context}>
+					{render()}
+				</StaticRouter>
+			</Provider>
+		)
 
-    return pageTemplate({
-      css: assets.main.css,
-      js: assets.main.js,
-      content,
-      data: JSON.stringify(data)
-    })
-  }
+		return pageTemplate({
+			css: assets.main.css,
+			js: assets.main.js,
+			content,
+			data: JSON.stringify(data)
+		})
+	}
 
-  function serverMiddleware(req, res, next) {
-    renderHtml(req, res)
-      .then(content => {
-        res.send(content)
-      })
-      .catch(err => {
-        res.status(500).json({
-          message: err.message,
-          stack: err.stack
-        })
-      })
-  }
+	function serverMiddleware(req, res, next) {
+		renderHtml(req, res)
+			.then(content => {
+				res.send(content)
+			})
+			.catch(err => {
+				res.status(500).json({
+					message: err.message,
+					stack: err.stack
+				})
+			})
+	}
 
-  const appRouter = new Router()
+	const appRouter = new Router()
 
-  // Data loading
-  appRouter.get('/api/react-router-data', async (req, res, next) => {
-    try {
-      res.json(await reactRouterLoadData(req.query.url))
-    } catch (err) {
-      res.status(500).json({
-        message: err.message,
-        stack: err.stack
-      })
-    }
-  })
+	// Data loading
+	appRouter.get('/api/react-router-data', async (req, res, next) => {
+		try {
+			res.json(await reactRouterLoadData(req.query.url))
+		} catch (err) {
+			res.status(500).json({
+				message: err.message,
+				stack: err.stack
+			})
+		}
+	})
 
-  // Other routes
-  appRouter.get('/*', serverMiddleware)
+	// Other routes
+	appRouter.get('/*', serverMiddleware)
 
-  return appRouter
+	return appRouter
 }
 
 export default createMiddleware

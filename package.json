@@ -30,8 +30,9 @@
     "webpack-hot-middleware": "^2.22.1"
   },
   "devDependencies": {
-    "webpack-cli": "^3.3.10",
-    "terser-webpack-plugin": "^2.2.1"
+    "eslint-plugin-react": "^7.16.0",
+    "terser-webpack-plugin": "^2.2.1",
+    "webpack-cli": "^3.3.10"
   },
   "scripts": {
     "webpack-client": "webpack --config build/webpack.client.js",
