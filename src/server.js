@@ -34,7 +34,7 @@ const createMiddleware = ({ assets }) => {
 		})
 	}
 
-	function serverMiddleware(req, res, next) {
+	const serverMiddleware = (req, res, next) => {
 		renderHtml(req, res)
 			.then(content => {
 				res.send(content)

@@ -7,19 +7,19 @@ import { ReactRouterDataSwitch } from 'components/ReactRouterDataSwitch/ReactRou
 import { routesConfig } from 'routes'
 
 const ReactRouterDataExample = () => {
-  return (
-    <section className="section">
-      <ReactRouterDataNavigation />
+	return (
+		<section className="section">
+			<ReactRouterDataNavigation />
 
-      <div className="section__content">
-        <ReactRouterDataSwitch>
-          {routesConfig.map(route => (
-            <Route {...route} />
-          ))}
-        </ReactRouterDataSwitch>
-      </div>
-    </section>
-  )
+			<div className="section__content">
+				<ReactRouterDataSwitch>
+					{routesConfig.map(route => (
+						<Route {...route} />
+					))}
+				</ReactRouterDataSwitch>
+			</div>
+		</section>
+	)
 }
 
 export { ReactRouterDataExample }
