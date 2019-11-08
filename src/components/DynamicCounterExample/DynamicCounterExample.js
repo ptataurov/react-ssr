@@ -4,6 +4,7 @@ const DynamicCounterExample = () => {
   const [counter, setCounter] = useState(0)
 
   let interval
+
   useEffect(() => {
     interval = setInterval(() => setCounter(counter + 1), 1000)
 

@@ -2,13 +2,17 @@ import { matchPath } from 'react-router-dom'
 
 import { routesConfig } from 'routes'
 
+const initialState = {
+  isLoading: false
+}
+
 const DATA_SOURCES = {
   data() {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve({
           user: 'John Snow',
-          isLoading: false
+          ...initialState
         })
       }, 1000)
     })
@@ -26,9 +30,7 @@ const reactRouterLoadData = url => {
     return DATA_SOURCES[routeConfig.key](route)
   }
 
-  return {
-    isLoading: false
-  }
+  return initialState
 }
 
 export { reactRouterLoadData }

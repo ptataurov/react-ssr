@@ -1,33 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 
-import { updateStore, setLoading } from 'actions/actions'
+import { getInitialData } from 'store/actions/actions'
 
 import { connect } from 'react-redux'
 import { Switch } from 'react-router-dom'
 
 const ReactRouterDataSwitchInternal = props => {
-  const { isLoading, onUpdate, onSetLoading } = props
+  const { isLoading, getData } = props
 
-  const fetchData = async () => {
-    const result = await fetch(
-      '/api/react-router-data?url=' + encodeURIComponent(location.pathname)
-    )
-    const data = await result.json()
+  const useDidMountEffect = (func, deps) => {
+    const didMount = useRef(false)
 
-    onUpdate(data)
+    useEffect(() => {
+      didMount.current ? func() : (didMount.current = true)
+    }, deps)
   }
 
   if (!IS_SERVER) {
-    useEffect(() => {
-      onSetLoading(true)
-
-      fetchData()
-        .catch(err => {
-          console.log(err)
-        })
-        .then(() => {
-          onSetLoading(false)
-        })
+    useDidMountEffect(() => {
+      getData(location.pathname)
     }, [location.pathname])
   }
 
@@ -54,8 +45,7 @@ const mapStateToProps = ({ isLoading }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onUpdate: payload => dispatch(updateStore(payload)),
-    onSetLoading: payload => dispatch(setLoading(payload))
+    getData: payload => dispatch(getInitialData(payload))
   }
 }
 

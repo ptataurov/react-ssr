@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { render } from 'app'
-import reducer from 'reducers/rootReducer'
-import { createStore } from 'redux'
+import rootReducer from 'store/reducers/rootReducer'
+import { createStore, applyMiddleware } from 'redux'
 import { hydrate } from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { clientRestoreData } from 'data/clientRestoreData'
+import thunk from 'redux-thunk'
 
 const start = state => {
   hydrate(
@@ -17,6 +18,10 @@ const start = state => {
   )
 }
 
-const store = createStore(reducer, clientRestoreData())
+const store = createStore(
+  rootReducer,
+  clientRestoreData(),
+  applyMiddleware(thunk)
+)
 
 start(store)

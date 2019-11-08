@@ -14,6 +14,7 @@ const ReactRouterDataExample = () => {
       <div className="section__content">
         <ReactRouterDataSwitch>
           {routesConfig.map(route => (
+            // eslint-disable-next-line
             <Route {...route} />
           ))}
         </ReactRouterDataSwitch>
