@@ -1,28 +1,33 @@
 {
-	"env": {
-		"es6": true,
-		"browser": true,
-		"node": true
-	},
-	"parser": "babel-eslint",
-	"rules": {
-		"semi": ["error", "never"],
-		"quotes": ["error", "single"],
-		"no-var": "error",
-		"padding-line-between-statements": [
-			"error",
-			{
-				"blankLine": "always",
-				"prev": "*",
-				"next": "return"
-			}
-		],
-		"no-unused-vars": [
-			"error",
-			{
-				"ignoreRestSiblings": true
-			}
-		]
-	},
-	"extends": ["eslint:recommended", "plugin:react/recommended"]
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "IS_SERVER": true,
+    "IS_CLIENT": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "indent": ["error", 2],
+    "semi": ["error", "never"],
+    "quotes": ["error", "single"],
+    "no-var": "error",
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return"
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "ignoreRestSiblings": true
+      }
+    ]
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"]
 }

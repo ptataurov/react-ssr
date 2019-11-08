@@ -85,7 +85,7 @@ let serverWatch = serverCompiler.watch(
 )
 
 // app.get('/favicon.ico', (req, res) => {
-// res.redirect('https://yandex.st/lego/_/pDu9OWAQKB0s2J9IojKpiS_Eho.ico');
+
 // });
 
 /**

@@ -15,9 +15,9 @@ export default ({ css, js, data = '', content = '' }) => `<!DOCTYPE html>
                 <div id="root">${content}</div>
                 
                 <script type="application/json" id="data">${data.replace(
-                  /</g,
-                  '&lt;'
-                )}</script>
+    /</g,
+    '&lt;'
+  )}</script>
                 <script src="/assets/${js}"></script>
                 </body>
             </html>`

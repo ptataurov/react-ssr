@@ -3,29 +3,32 @@ import { matchPath } from 'react-router-dom'
 import { routesConfig } from 'routes'
 
 const DATA_SOURCES = {
-	data() {
-		return new Promise(resolve => {
-			setTimeout(() => {
-				resolve({
-					user: 'John Snow'
-				})
-			}, 1000)
-		})
-	}
+  data() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          user: 'John Snow',
+          isLoading: false
+        })
+      }, 1000)
+    })
+  }
 }
 
 const reactRouterLoadData = url => {
-	let route
+  let route
 
-	const routeConfig = routesConfig.find(
-		({ path }) => (route = matchPath(url, path))
-	)
+  const routeConfig = routesConfig.find(
+    ({ path }) => (route = matchPath(url, path))
+  )
 
-	if (route && DATA_SOURCES[routeConfig.key]) {
-		return DATA_SOURCES[routeConfig.key](route)
-	}
+  if (route && DATA_SOURCES[routeConfig.key]) {
+    return DATA_SOURCES[routeConfig.key](route)
+  }
 
-	return {}
+  return {
+    isLoading: false
+  }
 }
 
 export { reactRouterLoadData }

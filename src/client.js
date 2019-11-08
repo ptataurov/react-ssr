@@ -9,12 +9,12 @@ import { BrowserRouter } from 'react-router-dom'
 import { clientRestoreData } from 'data/clientRestoreData'
 
 const start = state => {
-	hydrate(
-		<Provider store={state}>
-			<BrowserRouter>{render()}</BrowserRouter>
-		</Provider>,
-		document.getElementById('root')
-	)
+  hydrate(
+    <Provider store={state}>
+      <BrowserRouter>{render()}</BrowserRouter>
+    </Provider>,
+    document.getElementById('root')
+  )
 }
 
 const store = createStore(reducer, clientRestoreData())

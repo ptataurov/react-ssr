@@ -1,110 +1,65 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
+
+import { updateStore, setLoading } from 'actions/actions'
 
 import { connect } from 'react-redux'
 import { Switch } from 'react-router-dom'
 
-// class ReactRouterDataSwitchInternal extends React.Component {
-// 	constructor(props) {
-// 		super(props)
-
-// 		this.state = {}
-// 	}
-
-// 	componentWillReceiveProps() {
-// 		if (this.state.loading || IS_SERVER) {
-// 			return
-// 		}
-
-// 		this.setState({ loading: true })
-
-// 		this.fetchData()
-// 			.catch(err => {
-// 				console.log(err)
-// 			})
-// 			.then(() => {
-// 				this.setState({ loading: false })
-// 			})
-// 	}
-
-// 	async fetchData() {
-// 		const result = await fetch(
-// 			'/api/react-router-data?url=' + encodeURIComponent(location.pathname)
-// 		)
-// 		const data = await result.json()
-
-// 		this.props.dispatch({
-// 			type: 'UPDATE_STORE',
-// 			payload: data
-// 		})
-// 	}
-
-// 	render() {
-// 		if (IS_SERVER) {
-// 			return <Switch>{this.props.children}</Switch>
-// 		} else {
-// 			if (this.state.loading) {
-// 				return (
-// 					<section className="section">
-// 						<h1 className="section__title">Loading</h1>
-// 					</section>
-// 				)
-// 			}
-
-// 			return <Switch>{this.props.children}</Switch>
-// 		}
-// 	}
-// }
-
 const ReactRouterDataSwitchInternal = props => {
-	const [isLoading, setLoading] = useState(false)
+  const { isLoading, onUpdate, onSetLoading } = props
 
-	const fetchData = async () => {
-		const result = await fetch(
-			'/api/react-router-data?url=' + encodeURIComponent(location.pathname)
-		)
-		const data = await result.json()
+  const fetchData = async () => {
+    const result = await fetch(
+      '/api/react-router-data?url=' + encodeURIComponent(location.pathname)
+    )
+    const data = await result.json()
 
-		props.dispatch({
-			type: 'UPDATE_STORE',
-			payload: data
-		})
-	}
+    onUpdate(data)
+  }
 
-	if (isLoading || IS_SERVER) {
-		if (IS_SERVER) {
-			return <Switch>{props.children}</Switch>
-		} else {
-			if (isLoading) {
-				fetchData()
-					.catch(err => {
-						console.log(err)
-					})
-					.then(() => {
-						setLoading(false)
-					})
+  if (!IS_SERVER) {
+    useEffect(() => {
+      onSetLoading(true)
 
-				return (
-					<section className="section">
-						<h1 className="section__title">Loading</h1>
-					</section>
-				)
-			}
+      fetchData()
+        .catch(err => {
+          console.log(err)
+        })
+        .then(() => {
+          onSetLoading(false)
+        })
+    }, [location.pathname])
+  }
 
-			// setLoading(true)
+  if (IS_SERVER) {
+    return <Switch>{props.children}</Switch>
+  } else {
+    if (isLoading) {
+      return (
+        <section className="section">
+          <h1 className="section__title">Loading...</h1>
+        </section>
+      )
+    }
 
-			return <Switch>{props.children}</Switch>
-		}
-	}
-
-	fetchData()
-		.catch(err => {
-			console.log(err)
-		})
-		.then(() => {
-			setLoading(false)
-		})
-
-	return <Switch>{props.children}</Switch>
+    return <Switch>{props.children}</Switch>
+  }
 }
 
-export const ReactRouterDataSwitch = connect()(ReactRouterDataSwitchInternal)
+const mapStateToProps = ({ isLoading }) => {
+  return {
+    isLoading
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onUpdate: payload => dispatch(updateStore(payload)),
+    onSetLoading: payload => dispatch(setLoading(payload))
+  }
+}
+
+export const ReactRouterDataSwitch = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReactRouterDataSwitchInternal)
