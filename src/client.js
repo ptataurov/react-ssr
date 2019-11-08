@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from 'app'
 import rootReducer from 'store/reducers/rootReducer'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, compose, applyMiddleware } from 'redux'
 import { hydrate } from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
@@ -18,10 +18,15 @@ const start = state => {
   )
 }
 
+const composeEnhancers =
+  (typeof window !== 'undefined' &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose
+
 const store = createStore(
   rootReducer,
   clientRestoreData(),
-  applyMiddleware(thunk)
+  composeEnhancers(applyMiddleware(thunk))
 )
 
 start(store)

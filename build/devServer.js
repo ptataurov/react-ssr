@@ -115,7 +115,7 @@ app.use(
 )
 
 app.use((req, res, next) => {
-  let serverFs = serverCompiler.outputFileSystem
+  const serverFs = serverCompiler.outputFileSystem
 
   serverFs.readFile(
     join(serverConfig.output.path, serverAssetsMap.main.js),
@@ -125,11 +125,11 @@ app.use((req, res, next) => {
         res.status(500).end()
       } else {
         try {
-          let module = {}
+          const module = {}
 
           eval(data.toString())
 
-          let middleware = module.exports.default({
+          const middleware = module.exports.default({
             assets: clientAssetsMap
           })
 
@@ -143,12 +143,12 @@ app.use((req, res, next) => {
   )
 })
 
-let server = app.listen(config.port, () => {
+const server = app.listen(config.port, () => {
   console.log(`Dev server started at http://localhost:${config.port}`)
 })
 
-;['SIGINT', 'SIGTERM'].forEach(function(sig) {
-  process.on(sig, function() {
+;['SIGINT', 'SIGTERM'].forEach(sig => {
+  process.on(sig, () => {
     server.close()
     serverWatch.close()
     process.exit()

@@ -1,35 +1,33 @@
-const {join} = require('path');
-
 const config = require('./config').createTarget({
-    target: 'server'
-});
+  target: 'server'
+})
 
 module.exports = {
-    ...config.webpack,
+  ...config.webpack,
 
-    output: {
-        ...config.webpack.output,
-        libraryTarget: 'commonjs2'
-    },
+  output: {
+    ...config.webpack.output,
+    libraryTarget: 'commonjs2'
+  },
 
-    module: {
-        ...config.webpack.module,
+  module: {
+    ...config.webpack.module,
 
-        rules: [
-            ...config.webpack.module.rules,
+    rules: [
+      ...config.webpack.module.rules,
 
-            {
-                test: /\.css$/,
-                use: 'null-loader'
-            }
-        ]
-    },
+      {
+        test: /\.css$/,
+        use: 'null-loader'
+      }
+    ]
+  },
 
-    externals: {
-        'express': 'commonjs express',
-        'react': 'commonjs react',
-        'react-dom/server': 'commonjs react-dom/server',
-        'react-router': 'commonjs react-router',
-        'react-router-dom': 'commonjs react-router-dom'
-    }
-};
+  externals: {
+    express: 'commonjs express',
+    react: 'commonjs react',
+    'react-dom/server': 'commonjs react-dom/server',
+    'react-router': 'commonjs react-router',
+    'react-router-dom': 'commonjs react-router-dom'
+  }
+}
